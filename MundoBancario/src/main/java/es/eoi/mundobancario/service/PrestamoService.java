@@ -21,5 +21,9 @@ public interface PrestamoService {
 	public List<PrestamoDto> findPrestamosVivosByNumCuenta(Integer id);
 
 	public List<PrestamoDto> findPrestamosAmortizadosByNumCuenta(Integer id);
+	
+	public void pagado(Prestamo entity);
+	
+	public List<PrestamoDto> findPrestamosCuenta(Integer numCuenta);
 
 }

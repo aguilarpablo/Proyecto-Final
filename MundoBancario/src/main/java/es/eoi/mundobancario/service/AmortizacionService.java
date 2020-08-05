@@ -10,5 +10,7 @@ public interface AmortizacionService {
 
 	public void create(Prestamo dto);
 	
-	public List<Amortizacion> findByFecha(Date fecha);
+	public List<Amortizacion> findByFechaAndPagadoFalse(Date fecha);
+	
+	public void update(Amortizacion entity);
 }

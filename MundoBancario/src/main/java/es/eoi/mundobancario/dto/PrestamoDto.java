@@ -19,6 +19,8 @@ public class PrestamoDto {
 	private Double importe;
 
 	private Integer plazos;
+	
+	private Boolean pagado;
 
 	private List<AmortizacionDto> amortizaciones;
 

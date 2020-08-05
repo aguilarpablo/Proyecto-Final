@@ -44,8 +44,15 @@ public class AmortizacionServiceImpl implements AmortizacionService {
 	}
 
 	@Override
-	public List<Amortizacion> findByFecha(Date fecha) {
+	public List<Amortizacion> findByFechaAndPagadoFalse(Date fecha) {
 		return repository.findByFecha(fecha);
+	}
+
+	@Override
+	@Transactional(rollbackOn = Exception.class)
+	public void update(Amortizacion entity) {
+		repository.save(entity);
+		
 	}
 
 }

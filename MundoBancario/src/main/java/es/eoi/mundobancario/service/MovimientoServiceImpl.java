@@ -1,5 +1,8 @@
 package es.eoi.mundobancario.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
@@ -8,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import es.eoi.mundobancario.dto.CreateMovimientoDto;
 import es.eoi.mundobancario.dto.CreatePrestamoDto;
+import es.eoi.mundobancario.dto.MovimientoDto;
 import es.eoi.mundobancario.entity.Amortizacion;
 import es.eoi.mundobancario.entity.Movimiento;
 import es.eoi.mundobancario.repository.MovimientoRepository;
@@ -67,6 +71,13 @@ public class MovimientoServiceImpl implements MovimientoService {
 		dto.setIdTipo(tipoMovimiento);
 		
 		repository.save(mapper.map(dto, Movimiento.class));
+	}
+
+	@Override
+	public List<MovimientoDto> findMovimientosCuenta(Integer numCuenta) {
+		return repository.findByCuentaNumCuentaOrderByFecha(numCuenta).stream().
+				map(e -> mapper.map(e, MovimientoDto.class)).
+				collect(Collectors.toList());
 	}
 
 }

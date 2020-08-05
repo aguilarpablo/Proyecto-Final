@@ -14,5 +14,7 @@ public class AmortizacionDto {
 	private Date fecha;
 
 	private Double importe;
+	
+	private Boolean pagado;
 
 }

@@ -15,6 +15,7 @@ import es.eoi.mundobancario.dto.CreatePrestamoDto;
 import es.eoi.mundobancario.dto.PrestamoDto;
 import es.eoi.mundobancario.dto.ReportPrestamoDto;
 import es.eoi.mundobancario.dto.ReportPrestamoVivoAmortizadoDto;
+import es.eoi.mundobancario.entity.Amortizacion;
 import es.eoi.mundobancario.entity.Prestamo;
 import es.eoi.mundobancario.repository.PrestamoRepository;
 
@@ -53,7 +54,7 @@ public class PrestamoServiceImpl implements PrestamoService {
 	@Override
 	public List<ReportPrestamoVivoAmortizadoDto> findPrestamosVivos() {
 
-		return repository.findPrestamosVivos().stream().
+		return repository.findByPagadoFalse().stream().
 				map(e -> mapper.map(e, ReportPrestamoVivoAmortizadoDto.class)).
 				collect(Collectors.toList());	
 		
@@ -62,21 +63,45 @@ public class PrestamoServiceImpl implements PrestamoService {
 	@Override
 	public List<ReportPrestamoVivoAmortizadoDto> findPrestamosAmortizados() {
 		
-		return repository.findPrestamosAmortizados().stream().
+		return repository.findByPagadoTrue().stream().
 				map(e -> mapper.map(e, ReportPrestamoVivoAmortizadoDto.class)).
 				collect(Collectors.toList());	
 	}
 
 	@Override
 	public List<PrestamoDto> findPrestamosVivosByNumCuenta(Integer id) {
-		return repository.findPrestamosVivosByNumCuenta(id).stream().
+		return repository.findByPagadoFalseAndCuentaNumCuenta(id).stream().
 				map(e -> mapper.map(e, PrestamoDto.class)).
 				collect(Collectors.toList());
 	}
 
 	@Override
 	public List<PrestamoDto> findPrestamosAmortizadosByNumCuenta(Integer id) {
-		return repository.findPrestamosAmortizadosByNumCuenta(id).stream().
+		return repository.findByPagadoTrueAndCuentaNumCuenta(id).stream().
+				map(e -> mapper.map(e, PrestamoDto.class)).
+				collect(Collectors.toList());
+	}
+
+	@Override
+	@Transactional(rollbackOn = Exception.class)
+	public void pagado(Prestamo entity) {
+		
+		List<Amortizacion> amortizaciones = entity.getAmortizaciones();
+		Integer amortizacionesPagadas = 0;
+		for (Amortizacion amortizacion : amortizaciones) {
+			if (Boolean.TRUE.equals(amortizacion.getPagado())) {
+				amortizacionesPagadas++;
+			}
+		}
+		if (amortizacionesPagadas.equals(entity.getPlazos())) {
+			entity.setPagado(true);
+			repository.save(entity);
+		}
+	}
+
+	@Override
+	public List<PrestamoDto> findPrestamosCuenta(Integer numCuenta) {
+		return repository.findByCuentaNumCuenta(numCuenta).stream().
 				map(e -> mapper.map(e, PrestamoDto.class)).
 				collect(Collectors.toList());
 	}

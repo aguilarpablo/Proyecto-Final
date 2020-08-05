@@ -1,7 +1,5 @@
 package es.eoi.mundobancario.service;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 import es.eoi.mundobancario.dto.CreateCuentaDto;
 import es.eoi.mundobancario.dto.CuentaDto;
-import es.eoi.mundobancario.dto.MovimientoDto;
-import es.eoi.mundobancario.dto.PrestamoDto;
 import es.eoi.mundobancario.entity.Cuenta;
 import es.eoi.mundobancario.repository.CuentaRepository;
 
@@ -64,40 +60,6 @@ public class CuentaServiceImpl implements CuentaService {
 	}
 
 	@Override
-	public List<MovimientoDto> findMovimientosCuenta(Integer id) {
-
-		return repository.findById(id).get().getMovimientos().stream().
-				map(e -> mapper.map(e, MovimientoDto.class)).
-				collect(Collectors.toList());
-	}
-
-	@Override
-	public List<PrestamoDto> findPrestamosCuenta(Integer id) {
-		
-		return repository.findById(id).get().getPrestamos().stream().
-				map(e -> mapper.map(e, PrestamoDto.class)).
-				collect(Collectors.toList());
-	}
-
-	@Override
-	public List<PrestamoDto> findPrestamosVivosCuenta(Integer id) {
-		return repository.findById(id).get().getPrestamos().
-				stream().
-				filter(p -> fechaMasPlazos(p.getFecha(), p.getPlazos()).after(Calendar.getInstance().getTime())).
-				map(e -> mapper.map(e, PrestamoDto.class)).
-				collect(Collectors.toList());
-	}
-
-	@Override
-	public List<PrestamoDto> findPrestamosAmortizadosCuenta(Integer id) {
-		return repository.findById(id).get().getPrestamos().
-				stream().
-				filter(p -> fechaMasPlazos(p.getFecha(), p.getPlazos()).before(Calendar.getInstance().getTime())).
-				map(e -> mapper.map(e, PrestamoDto.class)).
-				collect(Collectors.toList());
-	}
-
-	@Override
 	@Transactional(rollbackOn = Exception.class)
 	public void updateSaldo(Integer id, Double importe, String tipoMovimiento) {
 		Cuenta cuenta = repository.findById(id).get();
@@ -110,15 +72,6 @@ public class CuentaServiceImpl implements CuentaService {
 		}
 		
 		repository.save(cuenta);
-	}
-	
-	private Date fechaMasPlazos(Date date, Integer plazos) {
-
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		calendar.add(Calendar.MONTH, plazos);
-		return calendar.getTime();
-
 	}
 
 }

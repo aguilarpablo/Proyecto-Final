@@ -33,6 +33,9 @@ public class Amortizacion {
 
 	@Column
 	private Double importe;
+	
+	@Column(nullable = false, columnDefinition = "TINYINT(1)")
+	private Boolean pagado;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_prestamo", referencedColumnName = "id")
