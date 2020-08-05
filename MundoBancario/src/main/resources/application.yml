@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/mundobancario?serverTimezone=UTC
+    username: root
+    password: 1234  
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+server:
+  port: 8080
