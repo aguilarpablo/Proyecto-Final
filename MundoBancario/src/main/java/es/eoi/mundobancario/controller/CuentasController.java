@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +32,7 @@ import es.eoi.mundobancario.service.TipoMovimientoService;
 
 @RestController
 public class CuentasController {
-
+    
 	@Autowired
 	CuentaService service;
 
@@ -94,6 +95,7 @@ public class CuentasController {
 
 			dto.setFecha(Calendar.getInstance().getTime());
 			dto.setNumCuenta(id);
+			dto.setPagado(false);
 			Prestamo prestamo = prestamoService.create(dto);
 			amortizacionService.create(prestamo);
 			movimientoService.createMovimientoPrestamo(dto,
@@ -134,6 +136,7 @@ public class CuentasController {
 
 	}
 
+	@Scheduled(cron = "0 0 8 * * *", zone = "Europe/Madrid")
 	@PostMapping("/cuentas/ejecutarAmortizacionesDiarias")
 	public ResponseEntity<String> runAmortizaciones() {
 		Date fecha = Calendar.getInstance().getTime();

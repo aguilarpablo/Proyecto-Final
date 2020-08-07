@@ -10,6 +10,8 @@ import lombok.Setter;
 @Setter
 public class ReportPrestamoDto {
 	
+	//Dto para el report de un préstamo
+	
 	private Integer id;
 
 	private String descripcion;
@@ -19,6 +21,8 @@ public class ReportPrestamoDto {
 	private Double importe;
 
 	private Integer plazos;
+	
+	private Boolean pagado;
 
 	private List<AmortizacionDto> amortizaciones;
 	

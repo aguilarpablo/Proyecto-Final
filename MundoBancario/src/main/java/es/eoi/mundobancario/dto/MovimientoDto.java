@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MovimientoDto {
+public class MovimientoDto implements Comparable<MovimientoDto> {
 
 	private Integer id;
 
@@ -19,4 +19,10 @@ public class MovimientoDto {
 
 	private TipoMovimientoDto tipoMovimiento;
 
+	@Override
+	public int compareTo(MovimientoDto o) {
+		return getFecha().compareTo(o.getFecha());
+	}
+
+	
 }

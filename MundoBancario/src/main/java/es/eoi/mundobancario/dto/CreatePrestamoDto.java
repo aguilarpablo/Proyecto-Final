@@ -25,5 +25,8 @@ public class CreatePrestamoDto {
 	
 	@JsonIgnore
 	private Integer numCuenta;
+	
+	@JsonIgnore
+	private Boolean pagado;
 
 }

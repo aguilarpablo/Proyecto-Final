@@ -9,6 +9,8 @@ import lombok.Setter;
 @Setter
 public class ReportPrestamoVivoAmortizadoDto {
 	
+	//Dto para mostrar los reports de préstamos vivos o amortizados
+	
 	private Integer id;
 
 	private String descripcion;
@@ -18,6 +20,8 @@ public class ReportPrestamoVivoAmortizadoDto {
 	private Double importe;
 
 	private Integer plazos;
+	
+	private Boolean pagado;
 	
 	private CuentaDto cuenta;
 

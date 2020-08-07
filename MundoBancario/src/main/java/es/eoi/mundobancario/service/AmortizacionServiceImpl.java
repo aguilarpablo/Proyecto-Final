@@ -28,7 +28,6 @@ public class AmortizacionServiceImpl implements AmortizacionService {
 	@Transactional(rollbackOn = Exception.class)
 	public void create(Prestamo e) {
 		for (int i = 1; i <= e.getPlazos(); i++) {
-			System.out.println();
 			CreateAmortizacionDto amortizacionDto = new CreateAmortizacionDto();
 			amortizacionDto.setIdPrestamo(e.getId());
 			amortizacionDto.setImporte(e.getImporte()/e.getPlazos());
@@ -36,9 +35,9 @@ public class AmortizacionServiceImpl implements AmortizacionService {
 			calendar.setTime(e.getFecha());
 			calendar.add(Calendar.MONTH, i);
 			amortizacionDto.setFecha(calendar.getTime());
+			amortizacionDto.setPagado(false);
 			
 			repository.save(mapper.map(amortizacionDto, Amortizacion.class));
-			System.out.println();
 		}	
 		
 	}

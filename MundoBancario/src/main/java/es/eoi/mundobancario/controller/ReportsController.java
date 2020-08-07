@@ -15,6 +15,7 @@ import es.eoi.mundobancario.dto.ReportClienteDto;
 import es.eoi.mundobancario.dto.ReportPrestamoDto;
 import es.eoi.mundobancario.dto.ReportPrestamoVivoAmortizadoDto;
 import es.eoi.mundobancario.service.ClienteService;
+import es.eoi.mundobancario.service.EmailService;
 import es.eoi.mundobancario.service.PrestamoService;
 import es.eoi.mundobancario.utils.GeneratePDFReport;
 
@@ -29,6 +30,9 @@ public class ReportsController {
 	
 	@Autowired
 	GeneratePDFReport generatePDFReport;
+	
+	@Autowired
+	EmailService emailService;
 	
 	@GetMapping("/reports/clientes/{id}")
 	public ResponseEntity<ReportClienteDto> reportClienteById(@PathVariable Integer id) {
@@ -53,12 +57,16 @@ public class ReportsController {
 	@PostMapping("/reports/clientes/{id}")
 	public ResponseEntity<GeneratePDFReport> reportClienteByIdPDF(@PathVariable Integer id) throws IOException {
 		 generatePDFReport.createPDFReportCliente(clienteService.findById(id));
+		 emailService.sendEmailReportCliente(clienteService.findById(id).getNombre(), 
+				 clienteService.findById(id).getEmail(), id);
 		 return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
 	@PostMapping("/reports/prestamos/{id}")
 	public ResponseEntity<GeneratePDFReport> reportPrestamoByIdPDF(@PathVariable Integer id) throws IOException {
 		 generatePDFReport.createPDFReportPrestamo(prestamoService.findReportPrestamoById(id));
+		 emailService.sendEmailReportPrestamo(prestamoService.findReportPrestamoById(id).getCliente().getNombre(), 
+				 prestamoService.findReportPrestamoById(id).getCliente().getEmail(), id);
 		 return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 

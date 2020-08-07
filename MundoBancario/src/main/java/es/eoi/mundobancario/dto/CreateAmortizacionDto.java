@@ -16,5 +16,7 @@ public class CreateAmortizacionDto {
 	private Double importe;
 	
 	private Integer idPrestamo;
+	
+	private Boolean pagado;
 
 }

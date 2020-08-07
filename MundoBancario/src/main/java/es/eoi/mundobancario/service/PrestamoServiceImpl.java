@@ -47,6 +47,7 @@ public class PrestamoServiceImpl implements PrestamoService {
 		dto.setFecha(prestamo.getFecha());
 		dto.setPlazos(prestamo.getPlazos());
 		dto.setImporte(prestamo.getImporte());
+		dto.setPagado(prestamo.getPagado());
 		
 		return dto;
 	}
