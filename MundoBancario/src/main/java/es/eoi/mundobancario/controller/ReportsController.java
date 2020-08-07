@@ -57,6 +57,7 @@ public class ReportsController {
 	@PostMapping("/reports/clientes/{id}")
 	public ResponseEntity<GeneratePDFReport> reportClienteByIdPDF(@PathVariable Integer id) throws IOException {
 		 generatePDFReport.createPDFReportCliente(clienteService.findById(id));
+		//Para probar el servicio de email se debe cambiar el correo si el de la bbdd no es real o poner uno propio para ver que llega
 		 emailService.sendEmailReportCliente(clienteService.findById(id).getNombre(), 
 				 clienteService.findById(id).getEmail(), id);
 		 return new ResponseEntity<>(HttpStatus.CREATED);
@@ -65,6 +66,7 @@ public class ReportsController {
 	@PostMapping("/reports/prestamos/{id}")
 	public ResponseEntity<GeneratePDFReport> reportPrestamoByIdPDF(@PathVariable Integer id) throws IOException {
 		 generatePDFReport.createPDFReportPrestamo(prestamoService.findReportPrestamoById(id));
+		// Para probar el servicio de email se debe cambiar el correo si el de la bbdd no es real o poner uno propio para ver que llega
 		 emailService.sendEmailReportPrestamo(prestamoService.findReportPrestamoById(id).getCliente().getNombre(), 
 				 prestamoService.findReportPrestamoById(id).getCliente().getEmail(), id);
 		 return new ResponseEntity<>(HttpStatus.CREATED);
